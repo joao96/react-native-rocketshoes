@@ -1,0 +1,93 @@
+import styled from 'styled-components/native';
+import { darken } from 'polished';
+
+export const Container = styled.View`
+  flex: 1;
+  padding: 20px;
+  background: #000;
+`;
+
+export const CartContainer = styled.View`
+  padding: 10px;
+  margin: 5px;
+  height: 90%;
+  background: #fff;
+  border-radius: 4px;
+`;
+
+export const CartInfoContainer = styled.View`
+  background: #fff;
+`;
+
+export const InfoContainer = styled.View`
+  margin: 5px;
+  align-self: center;
+`;
+
+export const ItemContainer = styled.View`
+  flex-direction: row;
+  padding: 1px;
+  margin: 5px;
+  background: #fff;
+`;
+
+export const AmountContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #eeeeee;
+`;
+
+export const Box = styled.TextInput`
+  height: 35px;
+  background: #fff;
+  border-radius: 4px;
+  width: 51px;
+  color: #797979;
+  padding: 10px;
+  margin-left: 20px;
+`;
+
+export const ProductImage = styled.Image`
+  width: 80px;
+  height: 80px;
+  align-self: center;
+`;
+
+export const Title = styled.Text`
+  font-size: 16px;
+  line-height: 20px;
+  color: #333;
+  margin-top: 5px;
+`;
+
+export const ButtonText = styled.Text`
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+`;
+
+export const Price = styled.Text`
+  font-weight: bold;
+  font-size: 21px;
+  color: #000;
+`;
+
+export const AddButton = styled.TouchableOpacity`
+  background: #7159c1;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 42px;
+
+  &:hover {
+    background: ${darken(0.05, '#7159c1')};
+  }
+`;
