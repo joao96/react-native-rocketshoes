@@ -1,15 +1,17 @@
 import Reactotron from 'reactotron-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { reactotronRedux } from 'reactotron-redux';
+import reactotronSaga from 'reactotron-redux-saga';
 
-if (__DEV__) {
-  // no host fica o IP da minha máquina
+if (process.env.NODE_ENV === 'development') {
   const tron = Reactotron.configure({ name: 'Rocketshoes' })
     .useReactNative()
     .setAsyncStorageHandler(AsyncStorage)
+    .use(reactotronRedux())
+    // .use(reactotronSaga())
+
     .connect();
 
-  console.tron = tron;
-
-  // dá um clear em toda a timeline quando dá refresh na aplicação
   tron.clear();
+  console.tron = tron;
 }

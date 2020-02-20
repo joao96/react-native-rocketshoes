@@ -1,7 +1,7 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -19,32 +19,27 @@ const Routes = createAppContainer(
     {
       initalRoute: 'Home',
 
-      // todas as telas vao herdar essas options
-      defaultNavigationOptions: {
-        // no android sempre coloca na esquerda, com isso vai centralizar
+      // all screens will inherit this options
+      defaultNavigationOptions: ({ navigation }) => ({
         headerLeft: () => null,
-        headerTitle: navigation => (
-          <Image
-            style={{ width: 185, height: 24 }}
-            source={logo}
-            // onPress={() => navigation.navigate('Home')}
-          />
+        headerTitle: () => (
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Image style={{ width: 185, height: 24 }} source={logo} />
+          </TouchableOpacity>
         ),
-        headerRight: navigation => (
+        headerRight: () => (
           <Icon
             style={{ marginRight: 20 }}
             name="shopping-basket"
             size={30}
             color="#fff"
-            // onPress={() => navigation.navigate('Cart')}
+            onPress={() => navigation.navigate('Cart')}
           />
         ),
-        // headerBackTitleVisible: false,
         headerStyle: {
           backgroundColor: '#141419',
         },
-        // cor que vai preencher nos titulos, botoes que estiverem no HEADER
-      },
+      }),
     }
   )
 );
