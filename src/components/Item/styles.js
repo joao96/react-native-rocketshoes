@@ -27,6 +27,7 @@ export const Title = styled.Text`
 export const ButtonText = styled.Text`
   text-align: center;
   font-weight: bold;
+  margin-right: 10%;
   color: #fff;
 `;
 
@@ -37,19 +38,29 @@ export const Price = styled.Text`
 `;
 
 export const AddButton = styled.TouchableOpacity`
+  flex-direction: row;
   background: #7159c1;
   color: #fff;
   border: 0;
   border-radius: 4px;
   overflow: hidden;
   margin-top: auto;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   height: 42px;
+`;
 
-  &:hover {
-    background: ${darken(0.05, '#7159c1')};
-  }
+export const AmountContainer = styled.View`
+  background: ${darken(0.03, '#7159c1')};
+  width: 70px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`;
+
+export const AmountText = styled.Text`
+  color: #fff;
+  margin-left: 5px;
 `;
