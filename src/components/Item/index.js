@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import * as CartActions from '../../actions/cart/index';
 
@@ -13,20 +14,26 @@ import {
   Price,
   AddButton,
   ButtonText,
+  AmountContainer,
+  AmountText,
 } from './styles';
 
-const Item = ({ product, navigation, addItemCart }) => {
-  function handleAddItemToCart() {
-    addItemCart(product);
-    navigation.navigate('Cart', { product });
+const Item = ({ product, navigation, addToCartRequest }) => {
+  function handleAddProduct(id) {
+    addToCartRequest(id);
+    navigation.navigate('Cart');
   }
 
   return (
     <Container>
       <ProductImage source={{ uri: product.image }} />
       <Title>{product.title}</Title>
-      <Price>{product.price}</Price>
-      <AddButton onPress={() => handleAddItemToCart()}>
+      <Price>{`R$ ${product.price}`}</Price>
+      <AddButton onPress={() => handleAddProduct(product.id)}>
+        <AmountContainer>
+          <Icon name="add-shopping-cart" size={20} color="#fff" />
+          <AmountText>{product.amount || 0}</AmountText>
+        </AmountContainer>
         <ButtonText>ADICIONAR</ButtonText>
       </AddButton>
     </Container>
@@ -41,20 +48,11 @@ Item.propTypes = {
     price: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
+    amount: PropTypes.number,
+    id: PropTypes.number.isRequired,
   }).isRequired,
+  addToCartRequest: PropTypes.func.isRequired,
 };
-// state.'cart' -> name of the reducer
-// const mapStateToProps = state => ({
-//   cart: state.cart.map(product => ({
-//     ...product,
-//     subtotalFormatted: formatPrice(product.price * product.amount),
-//   })),
-//   total: formatPrice(
-//     state.cart.reduce((total, product) => {
-//       return total + product.price * product.amount;
-//     }, 0)
-//   ),
-// });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(CartActions, dispatch);
