@@ -1,4 +1,5 @@
 import { call, select, put, all, takeLatest } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 import api from '../../../services/api';
 
 import { addToCartSuccess, updateAmountSuccess } from '../../../actions/cart';
@@ -19,7 +20,7 @@ function* addToCart({ id }) {
   const amount = currentAmount + 1;
 
   if (amount > stockAmount) {
-    console.tron.log('Quantidade solicidade fora de estoque.');
+    Alert.alert('Quantidade solicidade fora de estoque.');
     return;
   }
 
@@ -46,7 +47,7 @@ function* updateAmount({ id, amount }) {
   const stockAmount = stock.data.amount;
 
   if (amount > stockAmount) {
-    console.tron.log('Quantidade solicidade fora de estoque.');
+    Alert.alert('Quantidade solicidade fora de estoque.');
     return;
   }
   yield put(updateAmountSuccess(id, amount));
