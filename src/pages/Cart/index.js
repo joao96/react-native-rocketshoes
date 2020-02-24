@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as CartActions from '../../actions/cart/index';
 
@@ -27,19 +26,28 @@ import {
   Touchable,
 } from './styles';
 
-const Cart = ({
-  cart,
-  total,
-  navigation,
-  updateAmountRequest,
-  removeFromCart,
-}) => {
+function Cart({ navigation }) {
+  const cart = useSelector(state =>
+    state.cart.map(item => ({
+      ...item,
+      subtotal: item.price * item.amount,
+    }))
+  );
+
+  const total = useSelector(state =>
+    state.cart.reduce((totalSum, item) => {
+      return totalSum + item.amount * item.price;
+    }, 0)
+  );
+
+  const dispatch = useDispatch();
+
   function increment(product) {
-    updateAmountRequest(product.id, product.amount + 1);
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
   }
 
   function decrement(product) {
-    updateAmountRequest(product.id, product.amount - 1);
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
   }
 
   return (
@@ -63,7 +71,9 @@ const Cart = ({
                     </ImageInfoContainer>
                     <Touchable>
                       <Icon
-                        onPress={() => removeFromCart(item.id)}
+                        onPress={() =>
+                          dispatch(CartActions.removeFromCart(item.id))
+                        }
                         name="delete-forever"
                         size={30}
                         color="#f44336"
@@ -118,15 +128,13 @@ const Cart = ({
       </CartContainer>
     </Container>
   );
-};
+}
 
 Cart.defaultProps = {
   product: {},
 };
 
 Cart.propTypes = {
-  updateAmountRequest: PropTypes.func.isRequired,
-  removeFromCart: PropTypes.func.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
@@ -135,22 +143,6 @@ Cart.propTypes = {
     title: PropTypes.string,
     image: PropTypes.string,
   }),
-  cart: PropTypes.arrayOf(PropTypes.object).isRequired,
-  total: PropTypes.number.isRequired,
 };
 
-// state.'cart' -> name of the reducer
-const mapStateToProps = state => ({
-  cart: state.cart.map(item => ({
-    ...item,
-    subtotal: item.price * item.amount,
-  })),
-  total: state.cart.reduce((total, item) => {
-    return total + item.amount * item.price;
-  }, 0),
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default Cart;

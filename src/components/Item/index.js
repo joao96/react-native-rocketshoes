@@ -1,6 +1,5 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -18,9 +17,19 @@ import {
   AmountText,
 } from './styles';
 
-const Item = ({ product, navigation, addToCartRequest }) => {
+const Item = ({ product, navigation }) => {
+  const amount = useSelector(state =>
+    state.cart.reduce((sumAmount, item) => {
+      sumAmount[item.id] = item.amount;
+
+      return sumAmount;
+    }, {})
+  );
+
+  const dispatch = useDispatch();
+
   function handleAddProduct(id) {
-    addToCartRequest(id);
+    dispatch(CartActions.addToCartRequest(id));
     navigation.navigate('Cart');
   }
 
@@ -32,7 +41,7 @@ const Item = ({ product, navigation, addToCartRequest }) => {
       <AddButton onPress={() => handleAddProduct(product.id)}>
         <AmountContainer>
           <Icon name="add-shopping-cart" size={20} color="#fff" />
-          <AmountText>{product.amount || 0}</AmountText>
+          <AmountText>{amount[product.id] || 0}</AmountText>
         </AmountContainer>
         <ButtonText>ADICIONAR</ButtonText>
       </AddButton>
@@ -51,10 +60,6 @@ Item.propTypes = {
     amount: PropTypes.number,
     id: PropTypes.number.isRequired,
   }).isRequired,
-  addToCartRequest: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(CartActions, dispatch);
-
-export default withNavigation(connect(null, mapDispatchToProps)(Item));
+export default withNavigation(Item);
